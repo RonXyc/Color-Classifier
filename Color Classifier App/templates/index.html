@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ColorEye</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .navbar {
+            background-color: #dfdfdf;
+            width: 100%;
+            height: 50px;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar .logo img {
+            width: 200px;
+        }
+        .navbar .buttons {
+            display: flex;
+            align-items: center;
+        }
+        .navbar .buttons button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        .navbar .buttons button:hover {
+            background-color: #0056b3;
+        }
+        .navbar .buttons button.about:hover {
+            text-decoration: underline;
+        }
+        .navbar .buttons button.about {
+            color: #00154a;
+            font-size: 16px;
+            background-color: transparent; /* Remove background color from the "About" button */
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+        }
+        #content {
+            padding-top: 80px;
+            padding-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .content-title {
+            display: flex;
+            align-items: center;
+            margin-top: 50px;
+            font-size: 38px;
+            margin-bottom: 40px;
+        }
+        .content h1{
+          margin-bottom: 40px;
+        }
+        .content-title .line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #333;
+        }
+        .content-title span {
+            padding: 0 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        .capture-download {
+            height: 400px;
+            width: 1200px;
+            margin-left: 120px;
+            display: flex;
+            margin-bottom: 100px;
+            margin-top: 40px;
+        }
+        .capture-container {
+            height: 400px;
+            width: 580px;
+            display: block;
+            margin-right: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .download-container {
+            margin-top: -30px;
+            height: 460px;
+            width: 580px;
+            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        #video-container img {
+            border-radius: 10px;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #captured-image {
+            width: 580px;  /* Same width as the video */
+            height: 400px; /* Same height as the video */
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .images-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 100px; /* Adjust the top margin as needed */
+            margin-bottom: 20px;
+            width: 80%;
+        }
+        .images-container img {
+            width: 40%;
+        }
+        /* Default styles */
+        .content-section img {
+            width: 180px; /* Adjust the width of the images */
+        }
+        .content-section .description {
+            width: 45%; /* Adjust the width of the description */
+        }
+        .content-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 50%;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #D9D9D9;
+        }
+        /* Media query for smaller screens */
+        @media screen and (max-width: 768px) {
+            .content-section {
+                width: 80%; /* Adjust the width for smaller screens */
+                display: inline-block; /* Stack items vertically on smaller screens */
+            }
+            .content-section .description {
+                width: 100%; /* Make description full width on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{index}}"><img src="{{url_for('static', filename='images/logo text.png')}}" alt="logo" /></a>
+        </div>
+        <div class="buttons">
+            <button class="about" onclick="scrollToSection('about-section')">About</button>
+            <button onclick="scrollToSection('content')">Identify Now</button> 
+        </div>
+    </nav>
+
+    <div class="images-container">
+        <img src="{{url_for('static', filename='images/Untitled design.png')}}" alt="Image 1" />
+        <img src="{{url_for('static', filename='images/logoo.png')}}" alt="Image 2" />
+    </div>
+
+    <div id="content">
+        <h1>Identify Object's Color Now!</h1>
+        <div class="capture-download">
+            <div class="capture-container">
+                <div id="video-container">
+                    <img src="{{ url_for('video_feed') }}" id="video-feed" width="580" height="400">
+                </div>
+                <button onclick="captureImage()">Capture Image</button>
+            </div>
+            <div class="download-container">
+                <img id="captured-image" src="" alt="">
+                <div id="controls" style="display: none;"> <!-- Initially hidden -->
+                    <button id="cancelButton" onclick="cancelCapture()" style="margin-top: 10px;">Cancel</button>
+                    <button onclick="downloadImage()" style="margin-top: 10px;">Download Image</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-title" id="about-section"> <!-- Added ID for About section -->
+            <div class="line"></div>
+            <span>About</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="content-section" id="capture-section"> <!-- Added ID for Capture section -->
+            <img src="{{url_for('static', filename='images/Yellow.png')}}" alt="Image 3" />
+            <img src="{{url_for('static', filename='images/red.png')}}" alt="Image 4" />
+            <div class="description">
+                <p>
+                    Simply use your device's camera to capture and analyze colors in real time. Users can also download the captured images for further use and inspiration. Whether you're a designer, artist, or color enthusiast, ColorEye is your perfect companion for discovering the rich spectrum of colors around you.
+                </p>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        &copy; 2024 ColorEye. All rights reserved.
+    </footer>
+
+    <script>
+        function captureImage() {
+            document.getElementById("cancelButton").style.display = "inline-block";
+            document.getElementById("controls").style.display = "block"; // Show controls
+            fetch("/capture", { method: "POST" })
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("captured-image").src = data.image;
+                });
+        }
+
+        function cancelCapture() {
+            document.getElementById("cancelButton").style.display = "none";
+            document.getElementById("controls").style.display = "none"; // Hide controls
+            document.getElementById("captured-image").src = "";
+        }
+
+        function downloadImage() {
+            window.location.href = "/download";
+        }
+        function scrollToSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        };
+    </script>
+</body>
+</html>
